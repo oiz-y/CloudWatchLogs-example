@@ -41,7 +41,8 @@ def get_custom_log_events(log_group_name, log_stream_name):
         log_events, next_token = _get_custom_log_events(
             log_group_name, log_stream_name, next_token=next_token)
         merge_log_events.extend(log_events)
-    make_log_file(log_group_name, log_stream_name, merge_log_events)
+    
+    return merge_log_events
 
 def make_log_file(log_group_name, log_stream_name, log_events):
     log_file_name = f'{log_group_name}/{log_stream_name}.log'
@@ -67,4 +68,5 @@ def make_log_file(log_group_name, log_stream_name, log_events):
 def lambda_handler(event, context):
     log_group_name = 'my-log-group'
     log_stream_name = 'test-log-stream-5'
-    get_custom_log_events(log_group_name, log_stream_name)
+    merge_log_events = get_custom_log_events(log_group_name, log_stream_name)
+    make_log_file(log_group_name, log_stream_name, merge_log_events)
